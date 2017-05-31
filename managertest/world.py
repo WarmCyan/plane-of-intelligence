@@ -7,7 +7,27 @@ class World:
         pass
 
     def handleIncoming(self, msg):
-        if msg == "ping": self.write_out("pong")
+        if msg[0] == ":": self.write_out("!OK")
+        elif msg[0] == "!": 
+            cmd = msg[1:]
+            if cmd == "ping": self.write_out("!pong")
+            elif cmd == "createtests":
+                self.largetest = "*"
+                self.largetest *= 50000
+
+                self.excessivetest = "*"
+                self.excessivetest *= 5000000
+                self.write_out("!OK")
+            elif cmd == "deletetests":
+                self.largetest = ""
+                self.excessivetest = ""
+                self.write_out("!OK")
+            elif cmd == "largetest":
+                self.write_out(self.largetest)
+            elif cmd == "excessivetest":
+                self.write_out(self.excessivetest)
+            else:
+                self.write_out("WTF??")
         else:
             self.write_out("wtf?")
             
