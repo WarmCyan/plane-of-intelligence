@@ -34,6 +34,24 @@ class Manager:
 
         print("\nWorld process I/O successful!")
             
+
+    # -----------------------------------------------
+    # Some observations from running the below latency tests:
+    # 
+    # - The reads tend to be slower than writes. Since it's the 
+    # exact same amounts of data, I'm going to assume this is due 
+    # to the manager reading from the "subprocess.stdin" as opposed 
+    # to the external process itself, which just reads through 
+    # it's own sys.stdin. (Subprocess is a more complex abstraction 
+    # level, so presumably more code to run than sys) 
+    # 
+    # - Any single writes much larger than 4 GB seem to be causing
+    # a BrokenPipeError on the stream flush. This is either a 
+    # fundamental limitation on how much std streams can handle at 
+    # once, or due to limited RAM on my computer. 
+    # -----------------------------------------------
+
+
     def latencyReport(self, testsize=100, largetestsize=2):
         print("\nRunning latency tests...")
 
