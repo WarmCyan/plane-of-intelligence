@@ -14,6 +14,8 @@ class World:
 
         self.grid = [][]
 
+        self.g_ais = []
+
     def initalizeGrid(self):
         print("Initalizing grid of size " + str(width) + "x" + str(height))
         for y in range(0, self.height):
@@ -21,6 +23,46 @@ class World:
                 grid[x][y] = GridCell(x+y, x,y)
 	
 	
+
+    # input structure: ('|' delimited ais, ','  delimited modules, ' ' delimited values
+    # ",,0 0 1 3 4 5,2 1 7...|[next ai]"
+    def world_tick(self, aiinputstring):
+        
+        # run through every ai input
+        aiinputs = aiinputstring.split("|")
+        for ai_index in range(0, len(aiinputs)):
+            aiinput = aiinputs[ai_index]
+            ai = self.g_ais[ai_index]
+            
+            # verify ai input moves (make sure that number of outputs matches available
+            # ai modules
+            modules = aiinput.split(",")
+            for module_index in range(0, len(modules)):
+                module_vals = modules[module_index]
+                module = ai.modules[module_index]
+
+                if not module.allowsOutput and len(module_vals) > 0:
+                    print("WARNING - AI attempting to output on non-output module")
+                    continue
+                
+                values = module_vals.split(" ")
+                module.runOutput(self, values)
+                # handle values in module
+        
+        # handle world update (energy, etc.)
+
+        # create input sets
+        inputstrings = ""
+        for ai in g_ais:
+            inputstring = ""
+            for module in ai.modules:
+                inputstring += module.runInput(self) + ","
+            inputstring = inputstring[:-1]
+            
+            inputstrings += inputstring + "|"
+
+        inputstrings = [:-1]
+        return inputstrings
             
 
 class GridCell:
