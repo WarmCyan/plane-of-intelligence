@@ -12,17 +12,33 @@ class World:
         self.width = width
         self.height = height
 
-        self.grid = [][]
+        self.grid = []
 
         self.g_ais = []
 
     def initalizeGrid(self):
-        print("Initalizing grid of size " + str(width) + "x" + str(height))
+        print("Initalizing grid of size " + str(self.width) + "x" + str(self.height))
         for y in range(0, self.height):
+            self.grid.append([])
             for x in range(0, self.width):
-                grid[x][y] = GridCell(x+y, x,y)
+                self.grid[y].append(GridCell(x+y, x,y))
 	
+    def printGrid(self):
+        for y in range(0, len(self.grid)):
+            row = ""
+            for x in range(0, len(self.grid[y])):
+                row += str(self.grid[y][x].energy) + " "
+
+            print(row)
 	
+    def runEnergyFlow(self):
+        for y in range(0, len(self.grid)):
+            for x in range(0, len(self.grid[y])):
+                self.grid[y][x].calcEnergyShift(self.grid)
+        for y in range(0, len(self.grid)):
+            for x in range(0, len(self.grid[y])):
+                self.grid[y][x].executeEnergyShift(self.grid)
+                
 
     # input structure: ('|' delimited ais, ','  delimited modules, ' ' delimited values
     # ",,0 0 1 3 4 5,2 1 7...|[next ai]"
@@ -61,14 +77,14 @@ class World:
             
             inputstrings += inputstring + "|"
 
-        inputstrings = [:-1]
+        inputstrings = inputstrings[:-1]
         return inputstrings
             
 
 class GridCell:
 	def __init__(self, energy, x, y):
 		self.energy = energy
-		self.pos = [x,y]
+		self.pos = [y,x]
 		self.energyShift = [0,0,0,0,0,0,0,0] #center right, upper right, upper center, upper left, center left, lower left, lower center, lower right
 	
 	def calcEnergyShift(self, grid):
@@ -125,7 +141,7 @@ class GridCell:
 	def calcSingleEnergyShift(self, cell):
 		if(cell.energy >= self.energy):
 			return 0
-		return (self.energy - en) / 2
+		return (self.energy - cell.energy) / 2
 	
 	def executeEnergyShift(self, grid):
 		if(self.energyShift[0] != 0):
