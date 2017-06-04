@@ -156,6 +156,13 @@ class GridCell:
         return (self.energy - cell.energy) / 2
     
     def executeEnergyShift(self, grid):
+        mx = int(self.energy)/2
+        tl = 0
+        for i in range(0, len(self.energyShift)):
+            tl += self.energyShift[i]
+        if(tl>mx):
+            for i in range(0, len(self.energyShift)):
+                self.energyShift[i] = int((self.energyShift[i]/tl)*mx)
         if(self.energyShift[0] != 0):
             grid[self.pos[0]+1][self.pos[1]+0].energy += self.energyShift[0]
             self.energy -= self.energyShift[0]
@@ -180,4 +187,5 @@ class GridCell:
         if(self.energyShift[7] != 0):
             grid[self.pos[0]+1][self.pos[1]-1].energy += self.energyShift[7]
             self.energy -= self.energyShift[7]
+        print(self.energyShift)
         
