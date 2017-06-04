@@ -40,7 +40,7 @@ class World:
         ray = []
         for y in range(0,len(self.grid)):
             for x in range(0,len(self.grid[y])):
-                ray.append((int(self.grid[y][x].energy*7),0,0))
+                ray.append((int(self.grid[y][x].energy),0,0))
         return ray
     
     def runEnergyFlow(self):
@@ -187,5 +187,5 @@ class GridCell:
         if(self.energyShift[7] != 0):
             grid[self.pos[0]+1][self.pos[1]-1].energy += self.energyShift[7]
             self.energy -= self.energyShift[7]
-        print(self.energyShift)
+        #print(self.energyShift)
         
