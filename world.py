@@ -1,4 +1,5 @@
 from PIL import Image
+from moviepy.editor import *
 
 class GridSquare:
    
@@ -34,7 +35,18 @@ class World:
     def writeImage(self, framenum):
         img = Image.new('RGB',(len(self.grid),len(self.grid[0])))
         img.putdata(self.genImgArray())
-        img.save("./renders/frame" + str(framenum) + ".png")
+        #img.save("./renders/frame" + str(framenum) + ".png")
+        #img.save("./renders/frame" + str(framenum) + ".jpg")
+        name = str(framenum)
+        if framenum < 10: name = "00" + str(framenum)
+        elif framenum < 100: name = "0" + str(framenum)
+        img.save("./renders/" + name + ".jpg")
+
+    def createVideo(self):
+        clip = ImageSequenceClip("./renders/",fps=10)
+        #clip.write_videofile("./renders/movie.avi",fps=10,codec="libx264")
+        clip.write_videofile("./renders/movie.mp4",fps=10)
+        
     
     def genImgArray(self):
         ray = []

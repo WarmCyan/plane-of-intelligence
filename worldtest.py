@@ -13,9 +13,14 @@ def progressBar(current,max):
     print(s,end="")
 
 print("[                    ]",end="")
-for i in range(0, 240):
+frames = 100
+for i in range(0, frames):
     #w.printGrid()
     w.runEnergyFlow()
     w.writeImage(i)
-    progressBar(i,240)
+    progressBar(i,frames)
     #input()
+
+print("")
+w.createVideo()
+
